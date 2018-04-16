@@ -1,0 +1,113 @@
+﻿@model SeoManager.Models.NguoiDungViewModel
+
+@{
+    ViewBag.Title = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="clear:both; width:100%; height:100px"></div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="row" style="padding-bottom:100px">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+
+            <div class="account-wall">
+                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                     alt="">
+                <form class="form-horizontal" action="LogIn">
+              
+                    <input type="text" name="Email"  class="form-control input-md" placeholder="Email" required autofocus>
+                   
+                    <input type="password" name="Password"  class="form-control input-md" placeholder="Password" required>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" formmethod="post" formaction="LogInAsync" value="LogIn">
+                        Đăng nhập
+                    </button>
+                    <label class="checkbox pull-left">
+                        <input type="checkbox" value="remember-me">
+                        Lưu đăng nhập
+                    </label>
+                    @Html.ValidationSummary(true, "Error", new { @class = "text-danger" })
+                    <a href="#" class="pull-right need-help">Trợ giúp? </a><span class="clearfix"></span>
+                </form>
+            </div>
+            <a href="~/Account/RegisterAsync" class="text-center new-account">Đăng ký </a>
+        </div>
+    </div>
+}
+
+
+    <style>
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+            .form-signin .form-signin-heading, .form-signin .checkbox {
+                margin-bottom: 10px;
+            }
+
+            .form-signin .checkbox {
+                font-weight: normal;
+            }
+
+            .form-signin .form-control {
+                position: relative;
+                font-size: 16px;
+                height: auto;
+                padding: 10px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+                .form-signin .form-control:focus {
+                    z-index: 2;
+                }
+
+            .form-signin input[type="text"] {
+                margin-bottom: -1px;
+                padding : 10px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            .form-signin input[type="password"] {
+                margin-bottom: 10px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+        .account-wall {
+            padding: 40px 0px 20px 0px;
+        }
+
+        .login-title {
+            color: #555;
+            font-size: 18px;
+            font-weight: 400;
+            display: block;
+        }
+
+        .profile-img {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 10px;
+            display: block;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .need-help {
+            margin-top: 10px;
+        }
+
+        .new-account {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>

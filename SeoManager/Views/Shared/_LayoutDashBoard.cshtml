@@ -1,0 +1,235 @@
+﻿@model  SeoManager.Models.DashBoardViewModel
+@{ 
+    var viewModel = (SeoManager.Models.DashBoardViewModel)ViewBag.DashBoardViewModel;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+    <title>Seo Manager |  @ViewBag.Title<</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/UserInteface/css/style.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="~/UserInteface/css/colors/blue.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="~/DashBoard/Index">
+                        <!-- Logo icon -->
+                        <b>
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="~/images/logo.png" alt="homepage" class="dark-logo" />
+
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                       
+                    </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down">
+                            <form class="app-search p-l-20">
+                                <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a>
+                            </form>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5" />
+                                    @viewModel.NguoiDungViewModel.Name    ||
+                                <code>
+                                    @viewModel.NguoiDungViewModel.MoneyInAccount $
+                                </code>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="~/Account/LogOutAsync"  >
+                              Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/Index" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
+                        </li>
+                    </ul>
+
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/ProfileAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Profile</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/DomainAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Domain</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/WordAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Word</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/LinkAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Link</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/BackLinkAndWordAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Back Link và từ khóa</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/LinkAndWordAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Link và từ khóa</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/PayMethodAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Hình thức thanh toán</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/HistoryAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Lịch sử</a>
+                        </li>
+                    </ul>
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="~/DashBoard/DocumentAsync" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Hướng dẫn</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            @RenderBody()
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+
+        <!-- ============================================================== -->
+        <!-- End Wrapper -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- All Jquery -->
+        <!-- ============================================================== -->
+        <script src="~/assets/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="~/assets/plugins/bootstrap/js/tether.min.js"></script>
+        <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="~/UserInteface/js/jquery.slimscroll.js"></script>
+        <!--Wave Effects -->
+        <script src="~/UserInteface/js/waves.js"></script>
+        <!--Menu sidebar -->
+        <script src="~/UserInteface/js/sidebarmenu.js"></script>
+        <!--stickey kit -->
+        <script src="~/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+        <!--Custom JavaScript -->
+        <script src="~/UserInteface/js/custom.min.js"></script>
+        <!-- ============================================================== -->
+        <!-- This page plugins -->
+        <!-- ============================================================== -->
+        <!-- Flot Charts JavaScript -->
+        <script src="~/assets/plugins/flot/jquery.flot.js"></script>
+        <script src="~/assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+        <script src="~/UserInteface/js/flot-data.js"></script>
+        <!-- ============================================================== -->
+        <!-- Style switcher -->
+        <!-- ============================================================== -->
+        <script src="~/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+﻿@model SeoManager.Models.DashBoardViewModel
+@{
+    ViewBag.Title = "Word";
+    Layout = "~/Views/Shared/_LayoutDashBoard.cshtml";
+}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active">Từ khóa</li>
+            </ol>
+        </div>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <!-- column -->
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Các từ khóa từ các Link của bạn</h4>
+                    <h6 class="card-subtitle">Add class <code>.table</code></h6>
+                    <div class="table-responsive">
+                        <div id="wordtree_basic" style="width: auto; height: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['wordtree'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+     var words = [];
+         @{var i = 1; }
+            @foreach (var d in Model.WordViewModel)
+            {
+                i++;
+                @:var tmp = [];
+                @:tmp.push("@d")
+                @:words.push(tmp);
+                if (i>=30)
+                {
+                    break;
+                }
+            }
+
+  
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+            words
+        );
+        var options = {
+            maxFontSize: 16,
+            wordtree: {
+                format: 'implicit',
+                word: 'cats'
+            }
+        };
+
+        var chart = new google.visualization.WordTree(document.getElementById('wordtree_basic'));
+        chart.draw(data, options);
+    }
+</script>
+
+

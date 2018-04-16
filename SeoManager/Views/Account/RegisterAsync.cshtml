@@ -1,0 +1,65 @@
+﻿@model SeoManager.Models.NguoiDungViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="clear:both; width:100%; height:100px"></div>
+
+<div class="row" style="padding-bottom:100px">
+    <form class="form-horizontal">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <fieldset>
+                <!-- Form Name -->
+                <legend></legend>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="name">Tên đầy đủ</label>
+                    <div class="col-md-4">
+
+                        <input id="name" name="Name" type="text" placeholder="Name" class="form-control input-md">
+
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="email">Email</label>
+                    <div class="col-md-4">
+                        <input id="email" name="email" type="text" placeholder="Email" class="form-control input-md">
+
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="phone">Mật khẩu</label>
+                    <div class="col-md-4">
+                        <input id="password" name="password" type="password" placeholder="*******" class="form-control input-md">
+
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="phone">Điện thoại</label>
+                    <div class="col-md-4">
+                        <input id="phone" name="Phone" type="text" placeholder="Phone" class="form-control input-md">
+
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="reg"></label>
+                    <div class="col-md-4">
+                        <input type="submit" value="Đăng ký" formaction="RegisterAsync" formmethod="post" id="reg" name="reg" class="btn btn-primary" />
+                    </div>
+                </div>
+            </fieldset>
+        }
+    </form>
+</div>
+
+

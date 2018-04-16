@@ -1,0 +1,76 @@
+﻿@model SeoManager.Models.DashBoardViewModel
+@{
+                /**/
+
+                ViewBag.Title = "PayMethod";
+                Layout = "~/Views/Shared/_LayoutDashBoard.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active">Hình thức thanh toán dịch vụ</li>
+            </ol>
+        </div>
+        
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <!-- column -->
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Danh sách các hình thức hiện có</h4>
+                    <h6 class="card-subtitle">Add class <code>.table</code></h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ngân hàng</th>
+                                    <th>Số tài khoản</th>
+                                    <th>* Nội dung </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Vietin Bank</td>
+                                    <td>711A66351234</td>
+                                    <td>[@Model.NguoiDungViewModel.Id] - [Thanh toán ...]</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Vietcom Bank</td>
+                                    <td>989123123123</td>
+                                    <td>[@Model.NguoiDungViewModel.Id] - [Thanh toán ...]</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>BIDV</td>
+                                    <td>121232314334</td>
+                                    <td>[@Model.NguoiDungViewModel.Id] - [Thanh toán ...]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+</div>
+
