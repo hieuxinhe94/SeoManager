@@ -13,6 +13,6 @@ namespace SeoManager.Entities
         public DateTime ? NgayKichHoat { get; set; }
         public bool ? TrangThai { get; set; }
 
-    //    public virtual ICollection<Link> Link { get; set; }
+      //  public virtual ICollection<Link> Link { get; set; }
     }
 }

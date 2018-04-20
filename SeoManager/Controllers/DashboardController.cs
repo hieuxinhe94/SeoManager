@@ -6,13 +6,17 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using PagedList;
+
 
 namespace SeoManager.Controllers
 {
     public class DashboardController : Controller
     {
+        public readonly int PagetSize = 20;
         private ApplicationContext db = new ApplicationContext();
         private static DashBoardViewModel dashBoardViewModel { get; set; }
         public DashboardController()
@@ -25,7 +29,7 @@ namespace SeoManager.Controllers
                 {
                     dashBoardViewModel.NguoiDungViewModel = userCurrent;
                     db.Historys.Add(new Entities.History { NguoiDungId = userCurrent.Id, ThoiGian = DateTime.Now, MieuTa = "Comback to server" });
-                    Task.Run(() => db.SaveChangesAsync());
+                    db.SaveChangesAsync();
                     this.ViewData["DashBoardViewModel"] = dashBoardViewModel;
                 }
                 else
@@ -61,7 +65,9 @@ namespace SeoManager.Controllers
             return View(dashBoardViewModel);
         }
         [HttpPost]
-        public async Task<ActionResult> NguoiDungAddDomain([Bind(Include = "NguoiDungId,DomainName,DomainId,GoiCuocId")] NguoiDungThemDomainViewModel addDomainData)
+        public async Task<ActionResult> NguoiDungAddDomain(
+            [Bind(Include = "NguoiDungId,DomainName,DomainId,GoiCuocId")]
+        NguoiDungThemDomainViewModel addDomainData)
         {
             db = new ApplicationContext();
 
@@ -125,7 +131,8 @@ namespace SeoManager.Controllers
                 currentUSer.DomainAssign++;
                 db.NguoiDungs.AddOrUpdate(currentUSer);
 
-                db.Historys.Add(new Entities.History {
+                db.Historys.Add(new Entities.History
+                {
                     MieuTa = "Đăng ký domain " + existDomain.URL + ". " + "" + "Tài khoản còn lại: " + currentUSer.MoneyInAccount,
                     NguoiDungId = currentUSer.Id,
                     ThoiGian = DateTime.Now
@@ -152,6 +159,7 @@ namespace SeoManager.Controllers
             }
             return RedirectToAction("DomainAsync");
         }
+
         [HttpGet]
         public async Task<ActionResult> DomainAsync()
         {
@@ -168,7 +176,7 @@ namespace SeoManager.Controllers
         public async Task<ActionResult> LinkAsync()
         {
             db = new ApplicationContext();
-    
+
             var linkDb = await db.Links.AsNoTracking()
                 .Where(t => t.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id).ToListAsync();
 
@@ -179,16 +187,8 @@ namespace SeoManager.Controllers
         public async Task<ActionResult> ProfileAsync()
         {
             db = new ApplicationContext();
-            
-            var domainAssignToMeDb = await db.Domains.AsNoTracking()
-                .Where(t => t.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id).ToListAsync();
-            // count list link cua nguoi dung tu domain khai bao trong profile, nhung tam thoi get het ra da
-            var linkCount = await db.Links.AsNoTracking()
-                .Where(t => t.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id).CountAsync();
-            // sau nay dua vao properties day de tinh tien
 
-            dashBoardViewModel.NguoiDungViewModel.DomainAssign = linkCount;
-            dashBoardViewModel.DomainViewModel = domainAssignToMeDb;
+       
             return View(dashBoardViewModel);
         }
         [HttpGet]
@@ -207,13 +207,23 @@ namespace SeoManager.Controllers
         {
             db = new ApplicationContext();
             // get list word cua nguoi dung tu link tu domain khai bao trong profile, nhung tam thoi get het ra da
-            var wordOfMyLinkDb = await db.Words.AsNoTracking()
-             
-                .Select(t=>t.Text)
-                //.Where(t => t.Link.DomainId == dashBoardViewModel.NguoiDungViewModel.Id).Select(t => t.Word)
-                .ToListAsync();
+            var linkDb = await db.Links.AsNoTracking()
+               .Where(t => t.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id)
+               .Select(t => t.Id)
+               .ToListAsync();
 
-            dashBoardViewModel.WordViewModel =   wordOfMyLinkDb;
+            var wordOfMyLinkDb = await db.LinkAndWords.AsNoTracking()
+                    .Where(t => linkDb.Contains(t.LinkId))
+                    .Select(t => t.Word)
+
+                   .ToListAsync();
+            StringBuilder builder = new StringBuilder();
+            foreach (var item in wordOfMyLinkDb)
+            {
+                builder.Append(item.Text).Append(" ");
+            }
+
+            dashBoardViewModel.WordViewModel = builder.ToString();
             return View(dashBoardViewModel);
         }
         [HttpGet]
@@ -234,24 +244,58 @@ namespace SeoManager.Controllers
             return View(dashBoardViewModel);
         }
         [HttpGet]
-        public async Task<ActionResult> BackLinkAndWordAsync()
+        public async Task<ActionResult> BackLinkAndWordAsync(int? page)
         {
+            int pageNumber = (page ?? 1);
+
             db = new ApplicationContext();
             // get list back link and word 
-            var backLinkAndWordDb = await db.BackLinkAndWords.AsNoTracking()
-                .Where(t => db.Links.Where(k => k.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id).Select(k => t.Id).ToList().Contains(t.LinkToId)).ToListAsync();
+            var backLinkAndWordDb = db.BackLinkAndWords.AsNoTracking()
+                  .OrderBy(t => t.Id)
+                .Include(t => t.Link.Domain)
+                .Where(t =>
+                    t.Link.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id
+                )
+                .Include(t => t.Link)
+                .Include(t => t.LinkTo)
+                .Include(t => t.Word)
+                  .ToPagedList(pageNumber, PagetSize);
 
+            StringBuilder builder = new StringBuilder();
+
+            foreach (var item in backLinkAndWordDb)
+            {
+                builder.Append(item.Word.Text).Append(" ");
+            }
+
+            dashBoardViewModel.WordViewModel = builder.ToString();
             dashBoardViewModel.BackLinkWordViewModel = backLinkAndWordDb;
             return View(dashBoardViewModel);
         }
         [HttpGet]
-        public async Task<ActionResult> LinkAndWordAsync()
+        public async Task<ActionResult> LinkAndWordAsync(int? page)
         {
+            int pageNumber = (page ?? 1);
             db = new ApplicationContext();
             // get list  link and word of my domains
-            var linkAndWordDb = await db.LinkAndWords.AsNoTracking()
-                .Where(t => db.Links.Where(k => k.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id).Select(k => t.Id).ToList().Contains(t.LinkId)).ToListAsync();
+            var linkAndWordDb =   db.LinkAndWords.AsNoTracking()
+               .OrderBy(t=>t.Id)
+               .Include(t => t.Link.Domain)
+               .Where(t =>
+                   t.Link.Domain.NguoiDungId == dashBoardViewModel.NguoiDungViewModel.Id
+               )
+               .Include(t => t.Link)
+               .Include(t => t.Word)
 
+                .ToPagedList(pageNumber, PagetSize);
+
+            StringBuilder builder = new StringBuilder();
+            foreach (var item in linkAndWordDb)
+            {
+                builder.Append(item.Word.Text).Append(" ");
+            }
+
+            dashBoardViewModel.WordViewModel = builder.ToString();
             dashBoardViewModel.LinkWordViewModel = linkAndWordDb;
             return View(dashBoardViewModel);
         }

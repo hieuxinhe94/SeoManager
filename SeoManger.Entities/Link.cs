@@ -7,7 +7,7 @@ namespace SeoManager.Entities
 {
     public class Link: BaseEntities
     {
-        [Key, Column(Order = 2)]
+    
         public int DomainId { get; set; }
         public virtual Domain Domain { get; set; }
 

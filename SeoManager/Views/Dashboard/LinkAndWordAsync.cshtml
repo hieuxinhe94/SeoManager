@@ -3,6 +3,13 @@
     ViewBag.Title = "LinkAndWord";
     Layout = "~/Views/Shared/_LayoutDashBoard.cshtml";
 }
+@using PagedList.Mvc;
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+</script>
+<link href="https://fonts.googleapis.com/css?family=Crete+Round" rel="stylesheet">
 
 <div class="container-fluid">
     <!-- ============================================================== -->
@@ -18,19 +25,14 @@
         </div>
 
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Start Page Content -->
-    <!-- ============================================================== -->
+
     <div class="row">
         <!-- column -->
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-block">
                     <h4 class="card-title">Danh sách của bạn</h4>
-                    <h6 class="card-subtitle">Add class <code>.table</code></h6>
+
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -38,16 +40,16 @@
                                     <th>#</th>
                                     <th>Domain</th>
                                     <th>Link</th>
-                                    <th>Word</th>
+                                    <th>Từ khóa</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 @foreach (var item in Model.LinkWordViewModel)
                                 {
                                     <tr>
                                         <td>@item.Id</td>
-                                        <td>@item.Link.Domain.URL</td>
+                                        <td></td>
                                         <td>@item.Link.MoTa</td>
 
                                         <td>@item.Word.Text</td>
@@ -58,10 +60,84 @@
                     </div>
                 </div>
             </div>
+
+            Trang @(Model.LinkWordViewModel.PageCount < Model.LinkWordViewModel.PageNumber ? 0 : Model.LinkWordViewModel.PageNumber) of @Model.LinkWordViewModel.PageCount
+            
+            @Html.PagedListPager(Model.LinkWordViewModel, page => Url.Action("LinkAndWordAsync",
+                  new { page }))
         </div>
     </div>
     <!-- ============================================================== -->
     <!-- End PAge Content -->
     <!-- ============================================================== -->
+    <div class="row">
+        <!-- column -->
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Biểu đồ thống kê từ khóa</h4>
+
+                    <div class="table-responsive">
+                        <div id="myChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+<script>
+        var myConfig = {
+            type: 'wordcloud',
+      options: {
+          text: `@Model.WordViewModel`  ,
+        minLength: 5,
+        ignore: ["America", "American", "Applause", "Because", "because", "could", "don’t", "people", "That’s", "that’s", "Their", "their", "there", "these", "thing", "those", "through", "We’re", "we’re", "where", "would"],
+        maxItems: 100,
+        aspect: 'flow-center',
+        rotate: true,
+        colorType: 'palette',
+        palette: ['#D32F2F', '#5D4037', '#1976D2', '#E53935', '#6D4C41', '#1E88E5', '#F44336', '#795548', '#2196F3', '#EF5350', '#8D6E63', '#42A5F5'],
+
+        style: {
+            fontFamily: 'Crete Round',
+
+          hoverState: {
+            backgroundColor: '#D32F2F',
+            borderRadius: 2,
+            fontColor: 'white'
+          },
+          tooltip: {
+            text: '%text: %hits',
+            visible: true,
+
+            alpha: 0.9,
+            backgroundColor: '#1976D2',
+            borderRadius: 2,
+            borderColor: 'none',
+            fontColor: 'white',
+            fontFamily: 'Georgia',
+            textAlpha: 1
+          }
+        }
+      },
+
+      source: {
+        text: '-- Seo Manager Chart technique',
+         fontColor: '#64B5F6',
+        fontSize: 10,
+        fontFamily: 'Georgia',
+        fontWeight: 'normal',
+        marginBottom: '10%'
+      }
+    };
+
+    zingchart.render({
+                    id: 'myChart',
+      data: myConfig,
+      height: 400,
+      width: '100%'
+    });
+
+</script>

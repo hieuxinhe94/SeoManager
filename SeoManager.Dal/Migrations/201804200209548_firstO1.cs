@@ -3,7 +3,7 @@ namespace SeoManager.Dal.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class firstInit01 : DbMigration
+    public partial class firstO1 : DbMigration
     {
         public override void Up()
         {
@@ -17,18 +17,14 @@ namespace SeoManager.Dal.Migrations
                         WordId = c.Int(nullable: false),
                         NgayCapNhat = c.DateTime(),
                         TrangThai = c.Boolean(),
-                        Link_Id = c.Int(),
-                        Link_DomainId = c.Int(),
-                        LinkTo_Id = c.Int(),
-                        LinkTo_DomainId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Link", t => new { t.Link_Id, t.Link_DomainId })
-                .ForeignKey("dbo.Link", t => new { t.LinkTo_Id, t.LinkTo_DomainId })
-                .ForeignKey("dbo.Word", t => t.WordId, cascadeDelete: true)
-                .Index(t => t.WordId)
-                .Index(t => new { t.Link_Id, t.Link_DomainId })
-                .Index(t => new { t.LinkTo_Id, t.LinkTo_DomainId });
+                .ForeignKey("dbo.Link", t => t.LinkId, cascadeDelete: false)
+                .ForeignKey("dbo.Link", t => t.LinkToId, cascadeDelete: false)
+                .ForeignKey("dbo.Word", t => t.WordId, cascadeDelete: false)
+                .Index(t => t.LinkId)
+                .Index(t => t.LinkToId)
+                .Index(t => t.WordId);
             
             CreateTable(
                 "dbo.Link",
@@ -41,7 +37,7 @@ namespace SeoManager.Dal.Migrations
                         NgayTao = c.DateTime(),
                         TrangThai = c.Boolean(),
                     })
-                .PrimaryKey(t => new { t.Id, t.DomainId })
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Domain", t => t.DomainId, cascadeDelete: true)
                 .Index(t => t.DomainId);
             
@@ -126,37 +122,35 @@ namespace SeoManager.Dal.Migrations
                         XepHang = c.Int(nullable: false),
                         NgayCapNhat = c.DateTime(nullable: false),
                         TrangThai = c.Boolean(nullable: false),
-                        Link_Id = c.Int(),
-                        Link_DomainId = c.Int(),
                     })
                 .PrimaryKey(t => new { t.Id, t.LinkId, t.WordId })
-                .ForeignKey("dbo.Link", t => new { t.Link_Id, t.Link_DomainId })
-                .ForeignKey("dbo.Word", t => t.WordId, cascadeDelete: true)
-                .Index(t => t.WordId)
-                .Index(t => new { t.Link_Id, t.Link_DomainId });
+                .ForeignKey("dbo.Link", t => t.LinkId, cascadeDelete: false)
+                .ForeignKey("dbo.Word", t => t.WordId, cascadeDelete: false)
+                .Index(t => t.LinkId)
+                .Index(t => t.WordId);
             
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.LinkAndWord", "WordId", "dbo.Word");
-            DropForeignKey("dbo.LinkAndWord", new[] { "Link_Id", "Link_DomainId" }, "dbo.Link");
+            DropForeignKey("dbo.LinkAndWord", "LinkId", "dbo.Link");
             DropForeignKey("dbo.History", "NguoiDungId", "dbo.NguoiDung");
             DropForeignKey("dbo.BackLinkAndWord", "WordId", "dbo.Word");
-            DropForeignKey("dbo.BackLinkAndWord", new[] { "LinkTo_Id", "LinkTo_DomainId" }, "dbo.Link");
-            DropForeignKey("dbo.BackLinkAndWord", new[] { "Link_Id", "Link_DomainId" }, "dbo.Link");
+            DropForeignKey("dbo.BackLinkAndWord", "LinkToId", "dbo.Link");
+            DropForeignKey("dbo.BackLinkAndWord", "LinkId", "dbo.Link");
             DropForeignKey("dbo.Link", "DomainId", "dbo.Domain");
             DropForeignKey("dbo.Domain", "NguoiDungId", "dbo.NguoiDung");
             DropForeignKey("dbo.NguoiDung", "VaiTroId", "dbo.VaiTro");
-            DropIndex("dbo.LinkAndWord", new[] { "Link_Id", "Link_DomainId" });
             DropIndex("dbo.LinkAndWord", new[] { "WordId" });
+            DropIndex("dbo.LinkAndWord", new[] { "LinkId" });
             DropIndex("dbo.History", new[] { "NguoiDungId" });
             DropIndex("dbo.NguoiDung", new[] { "VaiTroId" });
             DropIndex("dbo.Domain", new[] { "NguoiDungId" });
             DropIndex("dbo.Link", new[] { "DomainId" });
-            DropIndex("dbo.BackLinkAndWord", new[] { "LinkTo_Id", "LinkTo_DomainId" });
-            DropIndex("dbo.BackLinkAndWord", new[] { "Link_Id", "Link_DomainId" });
             DropIndex("dbo.BackLinkAndWord", new[] { "WordId" });
+            DropIndex("dbo.BackLinkAndWord", new[] { "LinkToId" });
+            DropIndex("dbo.BackLinkAndWord", new[] { "LinkId" });
             DropTable("dbo.LinkAndWord");
             DropTable("dbo.History");
             DropTable("dbo.Word");
