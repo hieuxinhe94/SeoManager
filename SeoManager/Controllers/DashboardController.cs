@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using PagedList;
-
+using System.Collections.Generic;
 
 namespace SeoManager.Controllers
 {
@@ -298,6 +298,20 @@ namespace SeoManager.Controllers
             dashBoardViewModel.WordViewModel = builder.ToString();
             dashBoardViewModel.LinkWordViewModel = linkAndWordDb;
             return View(dashBoardViewModel);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Analysis(int userId)
+        {
+            var data = new List<AnalysicPerDay>();
+            data.Add(new AnalysicPerDay {
+                Day =1 , UserId = 1, CountLink = 1, CountBackLink = 1 , CountWord = 1
+            });
+            AnalysisViewModel vm = new AnalysisViewModel
+            {
+                AnalysicPerWeeks = data
+            };
+            return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
     }
 }

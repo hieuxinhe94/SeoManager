@@ -27,6 +27,7 @@ function getRandomData() {
     for (var i = 0; i < data.length; ++i) {
         res.push([i, data[i]])
     }
+    res = [[0, 3], [10, 3]];
     return res;
 }
 // Set up the control widget
@@ -78,16 +79,38 @@ update();
 //Flot Line Chart
 $(document).ready(function() {
     console.log("document ready");
+    var userId = document.getElementById('hiddenId').innerText;
+    console.log(userId);
     var offset = 0;
     plot();
 
     function plot() {
-        var sin = [],
-            cos = [];
+        var a = [[0, 3], [10, 3]],
+            b = [],
+            c = [];
+
+
+        $.ajax({
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            url: "//localhost:63958/DashBoard/Analysis?userId=" + userId,  //method Name 
+          
+            dataType: 'json',
+            success: function (data) {
+
+                console.log(data);
+            }, // callback above
+            error: function (msg) {
+                console.log(msg.responsetext);
+            }
+        });
+
         for (var i = 0; i < 12; i += 0.2) {
-            sin.push([i, Math.sin(i + offset)]);
-            cos.push([i, Math.cos(i + offset)]);
+            b.push([i, Math.sin(i + offset)]);
+            c.push([i, Math.cos(i + offset)]);
         }
+
+
         var options = {
             series: {
                 lines: {
@@ -121,11 +144,15 @@ $(document).ready(function() {
             }
         };
         var plotObj = $.plot($("#flot-line-chart"), [{
-            data: sin,
-            label: "sin(x)",
+            data: a,
+            label: "Từ khóa hàng ngày",
         }, {
-            data: cos,
-            label: "cos(x)"
-        }], options);
+            data: b,
+            label: "Số backlink hàng ngày"
+            },
+            {
+                data: c,
+                label: "Số link hàng ngày"
+            }], options);
     }
 });
